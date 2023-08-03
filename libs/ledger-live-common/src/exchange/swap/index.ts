@@ -35,8 +35,12 @@ export const isSwapOperationPending: (status: string) => boolean = status =>
   !operationStatusList.finishedOK.includes(status) &&
   !operationStatusList.finishedKO.includes(status);
 
-const getSwapAPIBaseURL: () => string = () => getEnv("SWAP_API_BASE");
-
+const getSwapAPIBaseURL: () => string = () => {
+  if (getEnv("MOCK") && getEnv("DETOX_RUN")) {
+    return getEnv("SWAP_MOCK_SERVER_BASE");
+  }
+  return getEnv("SWAP_API_BASE");
+};
 const SWAP_API_BASE_PATTERN = /.*\/v(?<version>\d+)\/*$/;
 const getSwapAPIVersion: () => number = () => {
   const version = Number(getSwapAPIBaseURL().match(SWAP_API_BASE_PATTERN)?.groups?.version);

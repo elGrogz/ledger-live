@@ -7,7 +7,11 @@ import { mockGetProviders } from "./mock";
 import type { GetProviders, ProvidersResponseV4 } from "./types";
 
 const getProviders: GetProviders = async () => {
-  if (getEnv("MOCK") && !getEnv("PLAYWRIGHT_RUN")) return mockGetProviders();
+  // if it's a mock run and it's not a playwright or a detox run, return the mock provider
+  // otherwise make a real network request
+
+  if (getEnv("MOCK") && (!getEnv("PLAYWRIGHT_RUN") || !getEnv("DETOX_RUN")))
+    return mockGetProviders();
 
   const res = await network({
     method: "GET",
