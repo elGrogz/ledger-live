@@ -10,8 +10,15 @@ const getProviders: GetProviders = async () => {
   // if it's a mock run and it's not a playwright or a detox run, return the mock provider
   // otherwise make a real network request
 
-  if (getEnv("MOCK") && (!getEnv("PLAYWRIGHT_RUN") || !getEnv("DETOX_RUN")))
+  if (getEnv("MOCK") && !getEnv("PLAYWRIGHT_RUN") && !getEnv("DETOX_RUN")) {
+    console.log("Common - getting mock providers");
+    console.log("Common - MOCK", getEnv("MOCK"));
+    console.log("Common - APP Name", getEnv("APP_NAME"));
+    console.log("Common - PLAYWRIGHT_RUN", getEnv("PLAYWRIGHT_RUN"));
+    console.log("Common - DETOX_RUN", getEnv("DETOX_RUN"));
+    console.log("Common - SWAP_MOCK_SERVER_BASE", getEnv("SWAP_MOCK_SERVER_BASE"));
     return mockGetProviders();
+  }
 
   const res = await network({
     method: "GET",

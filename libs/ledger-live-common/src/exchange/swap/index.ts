@@ -36,9 +36,18 @@ export const isSwapOperationPending: (status: string) => boolean = status =>
   !operationStatusList.finishedKO.includes(status);
 
 const getSwapAPIBaseURL: () => string = () => {
+  console.log("Mobile - getting mock providers");
+  console.log("Mobile - MOCK", getEnv("MOCK"));
+  console.log("Mobile - APP Name", getEnv("APP_NAME"));
+  console.log("Mobile - PLAYWRIGHT_RUN", getEnv("PLAYWRIGHT_RUN"));
+  console.log("Mobile - DETOX_RUN", getEnv("DETOX_RUN"));
+  console.log("Mobile - SWAP_MOCK_SERVER_BASE", getEnv("SWAP_MOCK_SERVER_BASE"));
+
   if (getEnv("MOCK") && getEnv("DETOX_RUN")) {
+    console.log("returning SWAP_MOCK_SERVER_BASE: ", getEnv("SWAP_MOCK_SERVER_BASE"));
     return getEnv("SWAP_MOCK_SERVER_BASE");
   }
+  console.log("returning SWAP_API_BASE: ", getEnv("SWAP_API_BASE"));
   return getEnv("SWAP_API_BASE");
 };
 const SWAP_API_BASE_PATTERN = /.*\/v(?<version>\d+)\/*$/;
